@@ -30,14 +30,10 @@ public class AdvertisementController {
     }
 
 
-//   @GetMapping("/getTargeting")
    @RequestMapping(value="/getTargeting/{page}", method=RequestMethod.GET)
    public PageTargetModel getTargeting(@PathVariable String page) throws ParseException {
-   //    try {
            return amsService.getTarget(page);
-  /*     }catch (Exception e){
-           return ResponseEntity.badRequest().body("Произошла ошибка");
-       }*/
+
    }
 
 
