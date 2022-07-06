@@ -1,10 +1,8 @@
 package com.example.AMSProject.controller;
 
-
-import com.example.AMSProject.model.ContentModel;
-import com.example.AMSProject.model.PageTargetModel;
-import com.example.AMSProject.model.Viewers;
+import com.example.AMSProject.model.*;
 import com.example.AMSProject.service.AdvertisementService;
+import com.example.AMSProject.service.AdvertisementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,26 +15,61 @@ import java.text.ParseException;
 public class AdvertisementController {
 
    @Autowired
-   private AdvertisementService amsService;
+   private AdvertisementServiceImpl amsService;
 
-
+    /**
+     * POST /advertisement/setViewed
+     * добавление не просмотренной рекламы пользователем
+     * используемая структура: class ViewedModel
+     * поля ViewedModel: String userGuid, String contentGuid
+     * @param viewed - ViewedModel[]
+     * @return код состояния
+     */
     @PostMapping("/setViewed")
     public ResponseEntity setViewed(@RequestBody Viewers viewed){
         try {
             return amsService.setViewed(viewed);
-        }catch (Exception e){
+       }catch (Exception e){
             return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+       }
     }
 
-
+    /**
+     * GET /advertisement/getTargeting/{page}
+     * Получение информации по странице за сегодняшний день
+     * Структура PageTargetModel
+     * Поля PageTargetModel:
+     * String page - наименование страницы
+     * String startDate - начало периода
+     * String endDate - окончание периода
+     * List<TargetModel> target - список пользователей и контента
+     * Стркутура TargetModel
+     * Поля TargetModel
+     * String userGuid - идентификатор пользователя
+     * List<OffersModel> offers
+     * Структура OffersModel
+     * Поля OffersModel
+     * String contentGuid - идентификатор контента
+     * byte priority - приоритет контента, выбирается случайно
+     * @param page - наименование страницы
+     * @return PageTargetModel
+     * @throws ParseException
+     */
    @RequestMapping(value="/getTargeting/{page}", method=RequestMethod.GET)
    public PageTargetModel getTargeting(@PathVariable String page) throws ParseException {
            return amsService.getTarget(page);
-
    }
 
-
+    /**
+     * POST /advertisement/setPublishedContent
+     * добавление информации о контенте предназначенный для каждой страницы
+     * используемая структура: class ContentModel
+     * поля ContentModel: String сontentGuid, List<PageModel> pages
+     * структура: PageModel
+     * Поля PageModel: String PageName
+     * @param content - ContentModel[]
+     * @return код состояния
+     */
     @PostMapping("/setPublishedContent")
     public ResponseEntity setPublishedContent(@RequestBody ContentModel content){
         try {
@@ -45,8 +78,4 @@ public class AdvertisementController {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }
-
-
-
-
 }

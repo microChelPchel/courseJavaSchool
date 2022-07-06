@@ -1,5 +1,7 @@
 package com.example.AMSProject.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,13 +12,14 @@ public class Viewed implements Serializable {
     @Id
     private String guid;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name="user_guid", nullable=false)
+    @JoinColumn(name = "user_guid", nullable = false)
     private Users users;
 
-
+    @NotNull
     @ManyToOne
-    @JoinColumn(name="content_guid", nullable=false)
+    @JoinColumn(name = "content_guid", nullable = false)
     private Content content;
 
     public Viewed() {

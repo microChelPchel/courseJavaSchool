@@ -7,8 +7,10 @@ import com.example.AMSProject.repository.ViewedRepoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,8 +31,8 @@ public class AdvertisementService implements AdvertisementServiceImpl {
     private ContentUserRepoImpl contentUserRepo;
 
 
-    public ResponseEntity setViewed(Viewers viewed){
-        for(ViewedModel view : viewed.getViewed()) {
+    public ResponseEntity setViewed(Viewers viewed) {
+        for (ViewedModel view : viewed.getViewed()) {
             viewedRepo.setViewed(view.getUserGuid(), view.getContentGuid());
         }
         return printAddSuccess();
@@ -38,30 +40,33 @@ public class AdvertisementService implements AdvertisementServiceImpl {
 
 
     public PageTargetModel getTarget(String namePage) throws ParseException {
-       var model = contentUserRepo.getTargetForPage(namePage);
-       List<TargetModel> targetPage = groupContent(model.stream());
+        var model = contentUserRepo.getTargetForPage(namePage);
+        List<TargetModel> targetPage = groupContent(model.stream());
         Date currentDate = new Date();
-        PageTargetModel pageTargetModel = new PageTargetModel(namePage, dateForFormatJson(currentDate,0), findNextDay(currentDate),targetPage);
+        PageTargetModel pageTargetModel = new PageTargetModel(namePage, dateForFormatJson(currentDate, 0), findNextDay(currentDate), targetPage);
         return pageTargetModel;
     }
 
 
-
-    public ResponseEntity saveContentPage(ContentModel contents){
-        for(ContentList content : contents.getContent()){
+    public ResponseEntity saveContentPage(ContentModel contents) {
+        for (ContentList content : contents.getContent()) {
             String contentGuid = content.getContentGuid();
             List<PageModel> pageModels = content.getPages();
-            contentPageRepo.setContent(contentGuid);
-            for(PageModel page : pageModels){
-                contentPageRepo.setPage(page.getPageName());
-                contentPageRepo.setContentPage(contentGuid);
+            for (PageModel page : pageModels) {
+                this.setData(page.getPageName(), contentGuid);
             }
         }
         return printAddSuccess();
     }
 
-    private ResponseEntity printAddSuccess(){
-        return  ResponseEntity.ok("Записи добавлены!");
+    @Transactional
+    private void setData(String pageName, String contentGuid) {
+        contentPageRepo.setPage(pageName);
+        contentPageRepo.setContentPage(contentGuid);
+    }
+
+    private ResponseEntity printAddSuccess() {
+        return ResponseEntity.ok("Записи добавлены!");
     }
 
     private List<TargetModel> groupContent(Stream<ContentUserModel> inputStream) {
@@ -74,9 +79,9 @@ public class AdvertisementService implements AdvertisementServiceImpl {
             target.setUserGuid(item.getKey());
             List<OffersModel> offers = new ArrayList<>();
             for (ContentUserModel content : item.getValue()) {
-                OffersModel offer =new OffersModel();
+                OffersModel offer = new OffersModel();
                 offer.setContentGuid(content.getContentGuid());
-                offer.setPriority(getRandomNumber((byte)0,(byte) 100));
+                offer.setPriority(getRandomNumber((byte) 0, (byte) 100));
                 offers.add(offer);
             }
             target.setOffers(offers);
@@ -91,13 +96,13 @@ public class AdvertisementService implements AdvertisementServiceImpl {
 
 
     private String findNextDay(Date date) throws ParseException {
-        return dateForFormatJson(date,1000 * 60 * 60 * 24);
+        return dateForFormatJson(date, 1000 * 60 * 60 * 24);
     }
 
-    private String dateForFormatJson(Date date,long ticks){
+    private String dateForFormatJson(Date date, long ticks) {
         String pattern = "ddMMyyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        return simpleDateFormat.format(new Date(date.getTime() +ticks));
+        return simpleDateFormat.format(new Date(date.getTime() + ticks));
     }
 
 

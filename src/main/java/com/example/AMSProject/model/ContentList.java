@@ -1,15 +1,15 @@
 package com.example.AMSProject.model;
 
-
 import java.io.Serializable;
 import java.util.List;
 
-public class ContentList  implements Serializable {
+public class ContentList implements Serializable {
 
     private String ContentGuid;
     private List<PageModel> pages;
 
-    public ContentList(){}
+    public ContentList() {
+    }
 
     public ContentList(String contentGuid, List<PageModel> pages) {
         ContentGuid = contentGuid;
