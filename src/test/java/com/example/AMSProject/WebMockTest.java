@@ -32,8 +32,6 @@ public class WebMockTest {
     private MockMvc mockMvc;
 
 
-    //TODO: недописанный тест
-
     /**
      * тест для контроллера AdvertisementController метода setViewed
      * в тест вшиты значения которые должны быть в тестовой бд
@@ -92,8 +90,6 @@ public class WebMockTest {
 
     }
 
-
-    //TODO: недописанный тест
 
     /**
      * тест для контроллера AdvertisementController метода setPublishedContent
