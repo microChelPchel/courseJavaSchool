@@ -1,5 +1,7 @@
 package com.example.AMSProject.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -12,10 +14,12 @@ public class Content implements Serializable {
     @Id
     private String guid;
 
+    @NotNull
     @OneToMany(mappedBy="content")
     private List<Viewed> viewed;
 
 
+    @NotNull
     @ManyToMany
     @JoinTable(
             name = "content_page",

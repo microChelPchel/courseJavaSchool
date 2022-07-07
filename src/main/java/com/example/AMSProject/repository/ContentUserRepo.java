@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ContentUserRepo implements ContentUserRepoImpl{
+public class ContentUserRepo implements ContentUserRepoImpl {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -25,11 +25,11 @@ public class ContentUserRepo implements ContentUserRepoImpl{
                 "where p.name= ?1 ;";
         try {
             Query query = entityManager.createNativeQuery(queryStr);
-            query.setParameter(1,name);
+            query.setParameter(1, name);
             List<Object[]> objects = query.getResultList();
             List<ContentUserModel> list = new ArrayList<>(objects.size());
             for (Object[] object : objects) {
-                list.add(new ContentUserModel((String)object[0],(String)object[1]));
+                list.add(new ContentUserModel((String) object[0], (String) object[1]));
             }
             return list;
         } catch (Exception e) {

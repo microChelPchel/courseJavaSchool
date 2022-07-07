@@ -2,6 +2,7 @@ package com.example.AMSProject.controller;
 
 import com.example.AMSProject.model.*;
 import com.example.AMSProject.service.AdvertisementService;
+import com.example.AMSProject.service.AdvertisementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.text.ParseException;
 public class AdvertisementController {
 
    @Autowired
-   private AdvertisementService amsService;
+   private AdvertisementServiceImpl amsService;
 
     /**
      * POST /advertisement/setViewed
@@ -28,9 +29,9 @@ public class AdvertisementController {
     public ResponseEntity setViewed(@RequestBody Viewers viewed){
         try {
             return amsService.setViewed(viewed);
-        }catch (Exception e){
+       }catch (Exception e){
             return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+       }
     }
 
     /**

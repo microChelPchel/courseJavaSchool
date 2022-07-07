@@ -1,5 +1,7 @@
 package com.example.AMSProject.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -11,7 +13,8 @@ public class Users implements Serializable {
     @Id
     private String guid;
 
-    @OneToMany(mappedBy="users")
+    @NotNull
+    @OneToMany(mappedBy = "users")
     private List<Viewed> viewed;
 
     public Users() {

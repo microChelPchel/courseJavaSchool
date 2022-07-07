@@ -2,11 +2,12 @@ package com.example.AMSProject.model;
 
 import java.io.Serializable;
 
-public class PageModel  implements Serializable {
+public class PageModel implements Serializable {
 
     private String PageName;
 
-    public PageModel(){}
+    public PageModel() {
+    }
 
     public PageModel(String pageName) {
         PageName = pageName;
