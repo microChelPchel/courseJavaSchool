@@ -35,7 +35,8 @@ public class AdvertisementController {
     }
 
     /**
-     * GET /advertisement/getTargeting/{page}
+     * POST /advertisement/getTargeting
+     * параметром является page строкового значения с наименованием страницы
      * Получение информации по странице за сегодняшний день
      * Структура PageTargetModel
      * Поля PageTargetModel:
@@ -55,8 +56,8 @@ public class AdvertisementController {
      * @return PageTargetModel
      * @throws ParseException
      */
-   @RequestMapping(value="/getTargeting/{page}", method=RequestMethod.GET)
-   public PageTargetModel getTargeting(@PathVariable String page) throws ParseException {
+   @PostMapping("/getTargeting")
+   public PageTargetModel getTargeting(@RequestBody String page) throws ParseException {
            return amsService.getTarget(page);
    }
 

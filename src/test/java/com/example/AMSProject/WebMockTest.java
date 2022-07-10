@@ -62,9 +62,10 @@ public class WebMockTest {
     @Test
     public void getTargetingTest() throws Exception {
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.get("/advertisement/getTargeting/test1")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/advertisement/getTargeting")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON)
+                .content("test1");
 
         String pattern = "ddMMyyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
