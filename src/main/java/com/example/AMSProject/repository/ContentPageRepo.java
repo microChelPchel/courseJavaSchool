@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 
 
-public interface ContentPageRepoImpl extends CrudRepository<Viewed, String> {
+public interface ContentPageRepo extends CrudRepository<Viewed, String> {
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO PAGE (guid,name) VALUES (UUID(),:pageName);",

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 
-public interface ViewedRepoImpl extends CrudRepository<Viewed, String> {
+public interface ViewedRepo extends CrudRepository<Viewed, String> {
 
     @Transactional
     @Modifying
